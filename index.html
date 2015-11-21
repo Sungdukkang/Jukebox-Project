@@ -5,6 +5,33 @@
 </head>
 
 <body>
-	<h1>Hello World!</h1>
+	<form id="searchbox" method="get" action="" name="search">
+		<h1>Search</h1>
+		<label>Keywords: </label><input type="text" id="query" name="query" />
+		<input type="submit" value="Search" name="submit" />
+	</form>
+
+	<div id="message">test</div>
+	<div id="results">test</div>
+
+	<script type="text/javascript">
+		$("form#searchbox").submit(function( event ) {
+			event.preventDefault();
+			url = "/api/results.json?" + $(this).serialize();
+			$("#results").append(url)
+			$.getJSON(url).done(function(data) {
+				$('#results').empty();
+				$('#message').empty();
+				if ("message" in data) {
+					$("message").append(data.message);
+				};
+				if ("query" in data){
+					var caption = "<strong>Your query is: " + data.query + "</strong>"
+					$("#results").append(caption) 
+				};	
+			});
+		});
+	</script>
+
 </body>
 </html>

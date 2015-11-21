@@ -30,5 +30,22 @@ class MainHandler(webapp2.RequestHandler):
 		template = JINJA_ENVIRONMENT.get_template('index.html')
 		self.response.write(template.render(template_values))
 
-application = webapp2.WSGIApplication([('/', MainHandler),
-	], debug=True)
+class jsonHandler(webapp2.RequestHandler):
+	def get(self):
+		template_values = {}
+
+		if self.request.get('query', False):
+			query = self.request.get('query')
+			template_values["query"] = json.load(query)
+		#TODO: Make a helper method that takes in the query as a parameter
+		#		and uses the soundcloud and youtube search functions
+
+		else:
+			template_values["message"] = "Please enter a search term."
+		
+		template = JINJA_ENVIRONMENT.get_template('results.json')
+		self.response.write(template.render(template_values))
+
+
+
+application = webapp2.WSGIApplication([('/', MainHandler), ('/api/results.json', jsonHandler),], debug=True)

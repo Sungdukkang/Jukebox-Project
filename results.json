@@ -1,0 +1,7 @@
+{
+	{%if message%}
+	"message":{{message}}
+	{% else %}
+	"query" : {{query}}
+	{% endif %}
+}
