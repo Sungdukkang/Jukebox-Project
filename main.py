@@ -36,7 +36,7 @@ class jsonHandler(webapp2.RequestHandler):
 
 		if self.request.get('query', False):
 			query = self.request.get('query')
-			template_values["query"] = json.load(query)
+			template_values["query"] = query
 		#TODO: Make a helper method that takes in the query as a parameter
 		#		and uses the soundcloud and youtube search functions
 
@@ -48,4 +48,4 @@ class jsonHandler(webapp2.RequestHandler):
 
 
 
-application = webapp2.WSGIApplication([('/', MainHandler), ('/api/results.json', jsonHandler),], debug=True)
+application = webapp2.WSGIApplication([('/api/results.json', jsonHandler),('/', MainHandler)], debug=True)

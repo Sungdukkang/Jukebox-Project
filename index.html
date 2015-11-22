@@ -18,7 +18,6 @@
 		$("form#searchbox").submit(function( event ) {
 			event.preventDefault();
 			url = "/api/results.json?" + $(this).serialize();
-			$("#results").append(url)
 			$.getJSON(url).done(function(data) {
 				$('#results').empty();
 				$('#message').empty();
