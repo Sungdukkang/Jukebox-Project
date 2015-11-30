@@ -25,8 +25,10 @@
 					$("message").append(data.message);
 				};
 				if ("query" in data){
-					var caption = "<strong>Your query is: " + data.query + "</strong>"
-					$("#results").append(caption) 
+					var caption = "<strong>Your query is: " + data.query + "</strong>";
+					$("#results").append(caption)
+					var track_title = "<h1>" + data.tracks + "</h1>";
+					$("#message").append(track_title);
 				};	
 			});
 		});

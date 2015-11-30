@@ -1,10 +1,5 @@
-import webapp2, os, urllib, urllib2, json, logging, soundcloud
-import jinja2
+import json, urllib, urllib2, webbrowser
 import soundcloud_key
-
-JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
-	extensions=['jinja2.ext.autoescape'],
-	autoescape=True)
 
 sc_client_id = soundcloud_key.key
 
@@ -44,28 +39,8 @@ class TrackList:
 		tracks = [Track(track) for track in results]
 		self.tracks = sorted(tracks, key = lambda x: x.pb_count, reverse = True)
 
+test = TrackList('hiatus kaiyote')
 
-
-class MainHandler(webapp2.RequestHandler):
-	def get(self):
-		template_values = {}
-		template = JINJA_ENVIRONMENT.get_template('index.html')
-		self.response.write(template.render(template_values))
-
-class jsonHandler(webapp2.RequestHandler):
-	def get(self):
-		template_values = {}
-
-		if self.request.get('query', False):
-			query = self.request.get('query')
-			template_values["query"] = query
-			res = TrackList(str(query))
-			if res != None:
-				template_values['track'] = res.tracks[0]
-		else:
-			template_values["message"] = "Please enter a search term."
-		
-		template = JINJA_ENVIRONMENT.get_template('results.json')
-		self.response.write(template.render(template_values))
-
-application = webapp2.WSGIApplication([('/api/results.json', jsonHandler),('/', MainHandler)], debug=True)
+for track in test.tracks:
+	print "%s: %d likes" % (track.title, track.likes)
+	print "User: " + track.user
