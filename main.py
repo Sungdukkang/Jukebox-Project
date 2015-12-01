@@ -8,6 +8,8 @@ JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.di
 
 sc_client_id = soundcloud_key.key
 
+# ======= Utility functions =======
+
 def pretty(obj):
 	return json.dumps(obj, sort_keys=True, indent = 2)
 
@@ -21,6 +23,8 @@ def safeGet(url):
         print "We failed to reach a server"
         print "Reason: ", e.reason
     return None
+
+# ======== Soundcloud Functions ========
 
 def searchSC(query, params={}):
 	baseurl = "https://api.soundcloud.com/tracks?"
@@ -44,7 +48,7 @@ class TrackList:
 		tracks = [Track(track) for track in results]
 		self.tracks = sorted(tracks, key = lambda x: x.pb_count, reverse = True)
 
-
+# ===== Request handlers =======
 
 class MainHandler(webapp2.RequestHandler):
 	def get(self):

@@ -1,25 +1,4 @@
-<html>
-<head>
-	<title>Cue</title>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-</head>
-
-<body>
-	<form id="searchbox" method="get" action="" name="search">
-		<h1>Search</h1>
-		<label>Keywords: </label><input type="text" id="query" name="query" />
-		<input type="submit" value="Search" name="submit" />
-	</form>
-
-	<div id="results">test</div>
-	<div id="message">test</div>
-
-
-	<script src="/scripts/ajaxhandler.js"></script>
-
-<!--
-	<script type="text/javascript">
-		$("form#searchbox").submit(function( event ) {
+$("form#searchbox").submit(function( event ) {
 			event.preventDefault();
 			url = "/api/results.json?" + $(this).serialize();
 			$.getJSON(url).done(function(data) {
@@ -43,7 +22,3 @@
 				};	
 			});
 		});
-	</script>
- -->
-</body>
-</html>
