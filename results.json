@@ -3,6 +3,17 @@
 	"message":"{{message}}"
 	{% else %}
 	"query" : "{{query}}",
-	"tracks" : "{{track.title}}"
+	"tracks" : [
+			{ "track_title" : "Bad fix"}
+		{% for track in tracks %}
+			
+			,{
+				"track_title" : "{{track.title}}",
+				"user" : "{{track.user}}",
+				"artwork" : "{{track.artwork}}",
+				"stream_url" : "{{track.stream_url}}" 
+			}
+		{% endfor %}
+	]
 	{% endif %}
 }

@@ -1,4 +1,4 @@
-import webapp2, os, urllib, urllib2, json, logging, soundcloud
+import webapp2, os, urllib, urllib2, json, logging
 import jinja2
 import soundcloud_key
 
@@ -24,13 +24,13 @@ def safeGet(url):
 
 def searchSC(query, params={}):
 	baseurl = "https://api.soundcloud.com/tracks?"
-	params = {'client_id': sc_client_id, 'q':query, 'limit': 100}
+	params = {'client_id': sc_client_id, 'q':query, 'limit': 25}
 	url = baseurl + urllib.urlencode(params)
 	return safeGet(url)
 
 class Track:
 	def __init__(self, info):
-		self.title = info['title'].encode('utf-8')
+		self.title = info['title'].encode('utf-8').decode('utf-8')
 		self.user = info['user']['username'].encode('utf-8')
 		self.artwork = info['artwork_url']
 		self.stream_url = info['stream_url']
@@ -61,11 +61,13 @@ class jsonHandler(webapp2.RequestHandler):
 			template_values["query"] = query
 			res = TrackList(str(query))
 			if res != None:
-				template_values['track'] = res.tracks[0]
+				template_values['tracks'] = res.tracks
 		else:
 			template_values["message"] = "Please enter a search term."
 		
 		template = JINJA_ENVIRONMENT.get_template('results.json')
-		self.response.write(template.render(template_values))
+		resp = template.render(template_values)
+		logging.info(resp)
+		self.response.write(resp)
 
 application = webapp2.WSGIApplication([('/api/results.json', jsonHandler),('/', MainHandler)], debug=True)

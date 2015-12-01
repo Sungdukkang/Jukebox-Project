@@ -11,8 +11,8 @@
 		<input type="submit" value="Search" name="submit" />
 	</form>
 
-	<div id="message">test</div>
 	<div id="results">test</div>
+	<div id="message">test</div>
 
 	<script type="text/javascript">
 		$("form#searchbox").submit(function( event ) {
@@ -25,10 +25,17 @@
 					$("message").append(data.message);
 				};
 				if ("query" in data){
-					var caption = "<strong>Your query is: " + data.query + "</strong>";
+					var caption = "<strong>Results for: " + data.query + "</strong>";
 					$("#results").append(caption)
-					var track_title = "<h1>" + data.tracks + "</h1>";
-					$("#message").append(track_title);
+					
+					for (var i = 1; i <= data.tracks.length; i++) {
+						var trackInfo = $("<div></div>");
+						var title = "<p>" + data.tracks[i].track_title + "</p>";
+						var user = "<p>" + data.tracks[i].user + "</p>";
+						trackInfo.append(title);
+						trackInfo.append(user);
+						$("#message").append(trackInfo);
+					};
 				};	
 			});
 		});
