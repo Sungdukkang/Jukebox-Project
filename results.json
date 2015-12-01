@@ -1,10 +1,15 @@
 {
 	{%if message%}
+
 	"message":"{{message}}"
+
 	{% else %}
+
 	"query" : "{{query}}",
+
 	"tracks" : [
 			{ "track_title" : "Bad fix"}
+
 		{% for track in tracks %}
 			
 			,{
@@ -15,5 +20,17 @@
 			}
 		{% endfor %}
 	]
+
+	"videos" : [
+			{ "track_title" : "Bad fix"}
+
+		{% for video in videos %}
+			
+			,{
+				"track_title" : "{{video.title}}",
+			}
+		{% endfor %}
+	]
+
 	{% endif %}
 }

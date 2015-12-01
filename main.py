@@ -1,7 +1,7 @@
 import webapp2, os, urllib, urllib2, json, logging
 import jinja2
 from apiclient.discovery import build
-import soundcloud_key, youtube_key
+import tracks, soundcloud_key, youtube_key
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
 	extensions=['jinja2.ext.autoescape'],
@@ -32,37 +32,45 @@ def safeGet(url):
 
 def searchSC(query, params={}):
 	baseurl = "https://api.soundcloud.com/tracks?"
-	params = {'client_id': sc_client_id, 'q':query, 'limit': 25}
+	params = {'client_id': sc_client_id, 'q':query, 'limit': 10}
 	url = baseurl + urllib.urlencode(params)
 	return safeGet(url)
 
 class Track:
-	def __init__(self, info):
-		self.title = info['title'].encode('utf-8').decode('utf-8')
-		self.user = info['user']['username'].encode('utf-8')
-		self.artwork = info['artwork_url']
-		self.stream_url = info['stream_url']
-		self.likes = info['likes_count']
-		self.pb_count = info['playback_count']
-		self.duration = info['duration']
+	def __init__(self, info, YT = False):
+		self.title = ""
+		self.user = ""
+		self.artwork = ""
+		self.stream_url = ""
+		self.likes = ""
+		self.pb_count = ""
+		self.duration = ""
+
+		if not YT:
+			self.title = info['title'].encode('utf-8').decode('utf-8')
+			self.user = info['user']['username'].encode('utf-8')
+			self.artwork = info['artwork_url']
+			self.stream_url = info['stream_url']
+			self.likes = info['likes_count']
+			self.pb_count = info['playback_count']
+			self.duration = info['duration']
+
+		else:
+			self.title = info["snippet"]["title"].encode('utf-8').decode('utf-8')
+
 
 class TrackList:
 	def __init__(self, query):
-		results = searchSC(query)
-		tracks = [Track(track) for track in results]
+		sc_res = searchSC(query)
+		yt_res = searchYT(query).get("items", [])
+		tracks = [Track(track) for track in sc_res]
+		videos = [Track(video, YT = True) for video in yt_res]
 		self.tracks = sorted(tracks, key = lambda x: x.pb_count, reverse = True)
+		self.videos = videos
 
 # ========== YouTube Functions ===========
 def searchYT(query, params = {}):
 	YouTube = build(YT_API_SERVICE_NAME, YT_API_VERSION, developerKey = YT_DEVELOPER_KEY)
-
-	params = {"q" : query, 
-			"part" : "id,snippet",
-			"order" : "viewCount", 
-			"type" : "video", 
-			"videoCategoryId" : "10",
-			"maxResults" : 10}
-
 	response = YouTube.search().list(q = query, part = "id,snippet", order = "viewCount", type = "video", videoCategoryId = "10").execute()
 
 	return response
@@ -82,11 +90,10 @@ class jsonHandler(webapp2.RequestHandler):
 		if self.request.get('query', False):
 			query = self.request.get('query')
 			template_values["query"] = query
-			sc_res = TrackList(str(query))
-			yt_res = searchYT(query)
-			logging.info(yt_res)
-			if sc_res != None:
-				template_values['tracks'] = sc_res.tracks
+			combined_res = TrackList(str(query))
+			if combined_res != None:
+				template_values['tracks'] = combined_res.tracks
+				template_values['videos'] = combined_res.videos
 		else:
 			template_values["message"] = "Please enter a search term."
 		
