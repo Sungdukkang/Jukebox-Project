@@ -28,6 +28,9 @@
 			
 			,{
 				"track_title" : "{{video.title}}",
+				"user" : "{{video.user}}",
+				"artwork" : "{{video.artwork}}",
+				"stream_url" : "{{video.stream_url}}"
 			}
 		{% endfor %}
 	]
