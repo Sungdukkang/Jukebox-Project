@@ -1,7 +1,7 @@
 import webapp2, os, urllib, urllib2, json, logging
 import jinja2
 from apiclient.discovery import build
-import tracks, soundcloud_key, youtube_key
+import soundcloud_key, youtube_key
 
 JINJA_ENVIRONMENT = jinja2.Environment(loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
 	extensions=['jinja2.ext.autoescape'],
@@ -32,14 +32,16 @@ def safeGet(url):
 
 def searchSC(query, params={}):
 	baseurl = "https://api.soundcloud.com/tracks?"
-	params = {'client_id': sc_client_id, 'q':query, 'limit': 10}
+	params = {'client_id': sc_client_id, 'q':query, 'limit': 5}
 	url = baseurl + urllib.urlencode(params)
 	return safeGet(url)
 
 # ========== YouTube Functions ===========
+YouTube = build(YT_API_SERVICE_NAME, YT_API_VERSION, developerKey = YT_DEVELOPER_KEY)
+
 def searchYT(query):
-	YouTube = build(YT_API_SERVICE_NAME, YT_API_VERSION, developerKey = YT_DEVELOPER_KEY)
-	response = YouTube.search().list(q = query, part = "id,snippet", order = "viewCount", type = "video", videoCategoryId = "10").execute()
+	MUSIC_CATEGORY= "10"
+	response = YouTube.search().list(q = query, part = "id,snippet", order = "viewCount", type = "video", videoCategoryId = MUSIC_CATEGORY).execute()
 	search_videos = []
 
 	#Merge video ids
@@ -57,14 +59,6 @@ def searchYT(query):
 # ========= Track Classes ========
 class Track:
 	def __init__(self, info, YT = False):
-		self.title = ""
-		self.user = ""
-		self.artwork = ""
-		self.stream_url = ""
-		self.likes = 0
-		self.pb_count = 0
-		self.duration = 0
-
 		if not YT:
 			self.title = info['title'].encode('utf-8').decode('utf-8')
 			self.user = info['user']['username'].encode('utf-8')
