@@ -36,15 +36,34 @@ def searchSC(query, params={}):
 	url = baseurl + urllib.urlencode(params)
 	return safeGet(url)
 
+# ========== YouTube Functions ===========
+def searchYT(query):
+	YouTube = build(YT_API_SERVICE_NAME, YT_API_VERSION, developerKey = YT_DEVELOPER_KEY)
+	response = YouTube.search().list(q = query, part = "id,snippet", order = "viewCount", type = "video", videoCategoryId = "10").execute()
+	search_videos = []
+
+	#Merge video ids
+	for result in response.get("items", []):
+		search_videos.append(result["id"]["videoId"])
+
+	video_ids = ",".join(search_videos)
+	video_response = YouTube.videos().list(
+		id = video_ids,
+		part = "snippet, statistics"
+		).execute()
+
+	return video_response.get("items", [])
+
+# ========= Track Classes ========
 class Track:
 	def __init__(self, info, YT = False):
 		self.title = ""
 		self.user = ""
 		self.artwork = ""
-		self.stream_url = ""
-		self.likes = ""
-		self.pb_count = ""
-		self.duration = ""
+		self.stream_url = "http://Youtube.com/"
+		self.likes = 0
+		self.pb_count = 0
+		self.duration = 0
 
 		if not YT:
 			self.title = info['title'].encode('utf-8').decode('utf-8')
@@ -57,23 +76,20 @@ class Track:
 
 		else:
 			self.title = info["snippet"]["title"].encode('utf-8').decode('utf-8')
+			self.user =  info["snippet"]["channelTitle"].encode('utf-8').decode('utf-8')
+			self.artwork = info["snippet"]["thumbnails"]["default"]["url"]
+			self.likes = info["statistics"]["likeCount"]
+			self.pb_count = info["statistics"]["viewCount"]
 
 
 class TrackList:
 	def __init__(self, query):
 		sc_res = searchSC(query)
-		yt_res = searchYT(query).get("items", [])
+		yt_res = searchYT(query)
 		tracks = [Track(track) for track in sc_res]
 		videos = [Track(video, YT = True) for video in yt_res]
 		self.tracks = sorted(tracks, key = lambda x: x.pb_count, reverse = True)
-		self.videos = videos
-
-# ========== YouTube Functions ===========
-def searchYT(query, params = {}):
-	YouTube = build(YT_API_SERVICE_NAME, YT_API_VERSION, developerKey = YT_DEVELOPER_KEY)
-	response = YouTube.search().list(q = query, part = "id,snippet", order = "viewCount", type = "video", videoCategoryId = "10").execute()
-
-	return response
+		self.videos = sorted(videos, key = lambda x: x.pb_count, reverse = True)
 
 # ===== Request handlers =======
 
