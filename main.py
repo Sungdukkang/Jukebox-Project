@@ -49,7 +49,7 @@ def searchYT(query):
 	video_ids = ",".join(search_videos)
 	video_response = YouTube.videos().list(
 		id = video_ids,
-		part = "snippet, statistics"
+		part = "snippet, statistics, contentDetails, player"
 		).execute()
 
 	return video_response.get("items", [])
@@ -60,7 +60,7 @@ class Track:
 		self.title = ""
 		self.user = ""
 		self.artwork = ""
-		self.stream_url = "http://Youtube.com/"
+		self.stream_url = ""
 		self.likes = 0
 		self.pb_count = 0
 		self.duration = 0
@@ -78,8 +78,10 @@ class Track:
 			self.title = info["snippet"]["title"].encode('utf-8').decode('utf-8')
 			self.user =  info["snippet"]["channelTitle"].encode('utf-8').decode('utf-8')
 			self.artwork = info["snippet"]["thumbnails"]["default"]["url"]
+			self.stream_url = info["player"]["embedHtml"]
 			self.likes = info["statistics"]["likeCount"]
 			self.pb_count = info["statistics"]["viewCount"]
+			self.duration = info["contentDetails"]["duration"]
 
 
 class TrackList:
