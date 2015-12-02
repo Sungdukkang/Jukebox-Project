@@ -41,7 +41,7 @@ YouTube = build(YT_API_SERVICE_NAME, YT_API_VERSION, developerKey = YT_DEVELOPER
 
 def searchYT(query):
 	MUSIC_CATEGORY= "10"
-	response = YouTube.search().list(q = query, part = "id,snippet", order = "viewCount", type = "video", videoCategoryId = MUSIC_CATEGORY).execute()
+	response = YouTube.search().list(q = query, part = "id", order = "viewCount", type = "video", videoCategoryId = MUSIC_CATEGORY).execute()
 	search_videos = []
 
 	#Merge video ids
@@ -58,23 +58,12 @@ def searchYT(query):
 
 # ========= Track Classes ========
 class Track:
-
-	def __init__(self, info):
-		self.title = info['title'].encode('utf-8').decode('utf-8')
-		self.user = info['user']['username'].encode('utf-8').decode('utf-8')
-		self.artwork = info['artwork_url']
-		self.stream_url = info['stream_url']
-		self.likes = info['likes_count']
-		self.pb_count = info['playback_count']
-		self.duration = info['duration']
-
 	def __init__(self, info, YT = False):
 		if not YT:
 			self.title = info['title'].encode('utf-8').decode('utf-8')
 			self.user = info['user']['username'].encode('utf-8')
 			self.artwork = info['artwork_url']
 			self.stream_url = info['stream_url']
-			self.likes = info['likes_count']
 			self.pb_count = info['playback_count']
 			self.duration = info['duration']
 
@@ -83,7 +72,6 @@ class Track:
 			self.user =  info["snippet"]["channelTitle"].encode('utf-8').decode('utf-8')
 			self.artwork = info["snippet"]["thumbnails"]["default"]["url"]
 			self.stream_url = info["player"]["embedHtml"]
-			self.likes = info["statistics"]["likeCount"]
 			self.pb_count = info["statistics"]["viewCount"]
 			self.duration = info["contentDetails"]["duration"]
 

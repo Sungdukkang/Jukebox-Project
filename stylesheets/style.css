@@ -1,0 +1,11 @@
+.artwork{
+	height: 100px;
+	width: 100px;
+	float: left;
+	border: solid black 1px;
+	margin-right: 5px;
+}
+
+.search-results{
+	padding-bottom: 2mm;
+}
