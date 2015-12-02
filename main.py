@@ -35,7 +35,7 @@ def searchSC(query, params={}):
 class Track:
 	def __init__(self, info):
 		self.title = info['title'].encode('utf-8').decode('utf-8')
-		self.user = info['user']['username'].encode('utf-8')
+		self.user = info['user']['username'].encode('utf-8').decode('utf-8')
 		self.artwork = info['artwork_url']
 		self.stream_url = info['stream_url']
 		self.likes = info['likes_count']
