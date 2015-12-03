@@ -4,7 +4,7 @@ $("form#searchbox").submit(function( event ) {
 			$.getJSON(url).done(function(data) {
 				$('#tracks').empty();
 				$('#videos').empty();
-				$('message').empty();
+				$('#track-name').empty();
 				if ("message" in data) {
 					$("#message").append(data.message);
 				};
@@ -15,18 +15,23 @@ $("form#searchbox").submit(function( event ) {
 					var tracks = "<h3>Tracks</h3>"
 					$("#tracks").append(tracks)
 					for (var i = 1; i < data.tracks.length; i++) {
-						var trackInfo = $("<div class='search-results'></div>");
+						var trackInfo = document.createElement('div');
+					    $(trackInfo).addClass('search-results');
+						
+						var artwork = document.createElement('img');
+						$(artwork).addClass('artwork');
+
 						if(data.tracks[i].artwork != 'None') {
-							var artwork = "<img class ='artwork' src=" + data.tracks[i].artwork + "></img>"   
+							$(artwork).attr('src', data.tracks[i].artwork); 
 						} else {
-							var artwork = "<img class ='artwork' src='/assets/default-art.png'></img>"   
+							$(artwork).attr('src', '/assets/default-art.png')
 						}
 						var title = "<p>" + data.tracks[i].track_title + "</p>";
 						var user = "<p>" + data.tracks[i].user + "</p>";
 						var linebreak = "<br />"
-						trackInfo.append(artwork);
-						trackInfo.append(title);
-						trackInfo.append(user);
+						$(trackInfo).append(artwork);
+						$(trackInfo).append(title);
+						$(trackInfo).append(user);
 						$("#tracks").append(trackInfo);
 						$("#tracks").append(linebreak);
 					};
@@ -34,14 +39,17 @@ $("form#searchbox").submit(function( event ) {
 					var videos = "<h3>Videos</h3>"
 					$("#videos").append(videos)
 					for (var i = 1; i < data.videos.length; i++) {
-						var trackInfo = $("<div class='search-results'></div>");
-						var artwork = "<img class ='artwork' src=" + data.videos[i].artwork + "></img>" 
+						var trackInfo = document.createElement('div');
+					    $(trackInfo).addClass('search-results');
+						var artwork = document.createElement('img');
+						$(artwork).addClass('thumbnail');
+						$(artwork).attr('src', data.videos[i].artwork); 
 						var title = "<p>" + data.videos[i].track_title + "</p>";
 						var user = "<p>" + data.videos[i].user + "</p>";
 						var linebreak = "<br />"
-						trackInfo.append(artwork);
-						trackInfo.append(title);
-						trackInfo.append(user);
+						$(trackInfo).append(artwork);
+						$(trackInfo).append(title);
+						$(trackInfo).append(user);
 						$("#videos").append(trackInfo);
 						$("#videos").append(linebreak);
 					};
