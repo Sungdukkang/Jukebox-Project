@@ -9,49 +9,55 @@ $("form#searchbox").submit(function( event ) {
 					$("#message").append(data.message);
 				};
 				if ("query" in data){
-					var caption = "<h2> Results for: " + data.query + "</h2>";
+					var caption = "<h2> Results for '" + data.query + "': </h2>";
 					$("#track-name").append(caption)
 					
 					var tracks = "<h3>Tracks</h3>"
 					$("#tracks").append(tracks)
 					for (var i = 1; i < data.tracks.length; i++) {
-						var trackInfo = document.createElement('div');
-					    $(trackInfo).addClass('search-results');
+						var container = document.createElement('div');
+					    $(container).addClass('search-results clearfix');
 						
 						var artwork = document.createElement('img');
 						$(artwork).addClass('artwork');
-
 						if(data.tracks[i].artwork != 'None') {
 							$(artwork).attr('src', data.tracks[i].artwork); 
 						} else {
 							$(artwork).attr('src', '/assets/default-art.png')
 						}
+
+						var trackInfo = document.createElement('div');
 						var title = "<p>" + data.tracks[i].track_title + "</p>";
 						var user = "<p>" + data.tracks[i].user + "</p>";
-						var linebreak = "<br />"
-						$(trackInfo).append(artwork);
 						$(trackInfo).append(title);
 						$(trackInfo).append(user);
-						$("#tracks").append(trackInfo);
-						$("#tracks").append(linebreak);
+
+						$(container).append(artwork);
+						$(container).append(trackInfo);
+
+						$("#tracks").append(container);
 					};
 
 					var videos = "<h3>Videos</h3>"
 					$("#videos").append(videos)
-					for (var i = 1; i < data.videos.length; i++) {
-						var trackInfo = document.createElement('div');
-					    $(trackInfo).addClass('search-results');
+					for (var i = 1; i < data.videos.length; i++) {					    
+						var container = document.createElement('div');
+					    $(container).addClass('search-results clearfix');
+					    
 						var artwork = document.createElement('img');
 						$(artwork).addClass('thumbnail');
 						$(artwork).attr('src', data.videos[i].artwork); 
+
+						var trackInfo = document.createElement('div');						
 						var title = "<p>" + data.videos[i].track_title + "</p>";
 						var user = "<p>" + data.videos[i].user + "</p>";
-						var linebreak = "<br />"
-						$(trackInfo).append(artwork);
 						$(trackInfo).append(title);
 						$(trackInfo).append(user);
-						$("#videos").append(trackInfo);
-						$("#videos").append(linebreak);
+
+						$(container).append(artwork);
+						$(container).append(trackInfo);
+						
+						$("#videos").append(container);
 					};
 				};	
 			});
