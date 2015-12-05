@@ -32,7 +32,7 @@ def safeGet(url):
 
 def searchSC(query, params={}):
 	baseurl = "https://api.soundcloud.com/tracks?"
-	params = {'client_id': sc_client_id, 'q':query, 'limit': 5}
+	params = {'client_id': sc_client_id, 'q':query, 'limit': 20}
 	url = baseurl + urllib.urlencode(params)
 	return safeGet(url)
 

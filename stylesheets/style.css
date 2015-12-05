@@ -17,7 +17,7 @@
 }
 
 
-.thumbnail{
+.yt-thumb{
 	height: 75px;
 	width: 100px;
 	float: left;
@@ -25,5 +25,15 @@
 	margin-right: 5px;
 }
 .search-results{
-	padding-bottom: 1mm;
+	margin-bottom: 2mm;
+	cursor: pointer;	
+}
+
+.search-results:hover{
+	background-color: blue;
+}
+
+.results-display{
+	height: 320px;
+	overflow-y: scroll; 
 }
