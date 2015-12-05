@@ -10,14 +10,18 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-6 col-lg-offset-3">
+			<div class="col-lg-4 col-lg-offset-4">
 				<form id="searchbox" method="get" action="" name="search">
 					<div class="input-group">
-						<input type="text" class='form-control' name="query" maxlength="80" placeholder="Search by tag, artist, title, etc." />
+						<input type="text" class='form-control' name="query" maxlength="60" placeholder="Search by tag, artist, title, etc." />
 						<span class="input-group-btn">
 							<button class="btn btn-default">Search!</button>
 						</span>
 					</div>
+					
+					<label class="radio-inline"><input type="radio" name="search_type" value="SC" checked="True">Soundcloud</label>
+					<label class="radio-inline"><input type="radio" name="search_type" value="YT">Youtube</label>
+					<label class="radio-inline"><input type="radio" name="search_type" value "both">SC + YT</label>
 				</form>
 			</div>
 		</div>
