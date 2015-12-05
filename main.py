@@ -77,13 +77,24 @@ class Track:
 
 
 class TrackList:
-	def __init__(self, query):
-		sc_res = searchSC(query)
-		yt_res = searchYT(query)
-		tracks = [Track(track) for track in sc_res]
-		videos = [Track(video, YT = True) for video in yt_res]
-		self.tracks = sorted(tracks, key = lambda x: x.pb_count, reverse = True)
-		self.videos = sorted(videos, key = lambda x: x.pb_count, reverse = True)
+	def __init__(self, query, search_type):
+		self.tracks = []
+		self.videos = []
+		if search_type == "SC":
+			sc_res = searchSC(query)
+			tracks = [Track(track) for track in sc_res]
+			self.tracks = sorted(tracks, key = lambda x: x.pb_count, reverse = True)
+		elif search_type == "YT":
+			yt_res = searchYT(query)
+			videos = [Track(video, YT = True) for video in yt_res]
+			self.videos = sorted(videos, key = lambda x: x.pb_count, reverse = True)
+		else:
+			sc_res = searchSC(query)
+			tracks = [Track(track) for track in sc_res]
+			yt_res = searchYT(query)
+			videos = [Track(video, YT = True) for video in yt_res]
+			self.tracks = sorted(tracks, key = lambda x: x.pb_count, reverse = True)
+			self.videos = sorted(videos, key = lambda x: x.pb_count, reverse = True)
 
 # ===== Request handlers =======
 
@@ -99,8 +110,9 @@ class jsonHandler(webapp2.RequestHandler):
 
 		if self.request.get('query', False):
 			query = self.request.get('query')
+			search_type = self.request.get('search_type')
 			template_values["query"] = query
-			combined_res = TrackList(str(query))
+			combined_res = TrackList(str(query), str(search_type))
 			if combined_res != None:
 				template_values['tracks'] = combined_res.tracks
 				template_values['videos'] = combined_res.videos
