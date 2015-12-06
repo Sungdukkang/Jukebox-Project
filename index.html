@@ -8,9 +8,12 @@
 
 <body>
 
+	<h1 style="text-align:center;">Cue!</h1>
+	
 	<div class="container">
 		<div class="row">
-			<div class="col-lg-4 col-lg-offset-4">
+			
+			<div class="col-lg-6">
 				<form id="searchbox" method="get" action="" name="search">
 					<div class="input-group">
 						<input type="text" class='form-control' name="query" maxlength="60" placeholder="Search by tag, artist, title, etc." />
@@ -23,22 +26,27 @@
 					<label class="radio-inline"><input type="radio" name="search_type" value="YT">Youtube</label>
 					<label class="radio-inline"><input type="radio" name="search_type" value "both">SC + YT</label>
 				</form>
-			</div>
-		</div>
-	</div>
-	
-	<div id="results-container">
-		<div id="track-name"></div>
-		<div id="tracks-container" style="display:none;">
-			<h3>Tracks</h3>
-			<div id="tracks" class="results-display"></div>
-		</div>
-		<div id="videos-container" style="display:none;">
-			<h3>Videos</h3>
-			<div id="videos" class="results-display"></div>
-		</div>
-	</div>
 
+				<div id="results-container">
+					<div id="track-name"></div>
+					<div id="tracks-container" style="display:none;">
+						<h4>Tracks</h4>
+						<div id="tracks" class="results-display"></div>
+					</div>
+					<div id="videos-container" style="display:none;">
+						<h4>Videos</h4>
+						<div id="videos" class="results-display"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-6">
+				<h4>Queue</h4>
+				<ul id="queue"></ul>
+			</div>
+
+		</div>
+	</div>
 
 	<script src="/scripts/ajaxhandler.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
