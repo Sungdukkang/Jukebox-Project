@@ -7,6 +7,12 @@ $("form#searchbox").submit(function( event ) {
 		$('#tracks').empty()
 		$('#videos').empty()
 		$('#track-name').empty();
+
+
+		$(document).on('click', '.search-results.clearfix', function(event) {
+			$('#queue').append($(this));
+		});
+        
 		
 		if ("message" in data) {
 			$("#message").append(data.message);
@@ -23,7 +29,7 @@ $("form#searchbox").submit(function( event ) {
 					var container = document.createElement('div');
 				    $(container).addClass('search-results clearfix');
 				    $(container).addClass('SC');
-				    $(container).attr("id", currTrack.uri);
+				    $(container).attr("id", currTrack.stream_url);
 					
 					var artwork = document.createElement('img');
 					$(artwork).addClass('artwork');
@@ -52,7 +58,7 @@ $("form#searchbox").submit(function( event ) {
 					var container = document.createElement('div');
 				    $(container).addClass('search-results clearfix');
 				    $(container).addClass('YT');
-				    $(container).attr("id", data.videos[i].uri);
+				    $(container).attr("id", data.videos[i].stream_url);
 				    
 					var artwork = document.createElement('img');
 					$(artwork).addClass('yt-thumb');
@@ -74,31 +80,27 @@ $("form#searchbox").submit(function( event ) {
 		
 		$(".search-results.clearfix").click(function(event){
 			event.preventDefault();
-			var iframe = ""
+			$('#SCplayer').hide().attr('src', '');
+			$('#YTplayer').hide().attr('src', '');
+
 			if( $(this).hasClass("SC") ) {
-				iframe = "<iframe width=\"100%\" height=\"450\" scrolling=\"no\" frameborder=\"no\" src="
-				+ "https://w.soundcloud.com/player/?url="
-				+  this.id
-				+ "&amp;auto_play=true"
-				+ "&amp;hide_related=false"
-				+ "&amp;show_comments=true"
-				+ "&amp;show_user=true"
-				+ "&amp;show_reposts=false"
-				+ "&amp;visual=true\"></iframe>"; 
+				$('#SCplayer').show();
+				$('#SCplayer').attr('src', "https://w.soundcloud.com/player/?url="
+					+  this.id
+					+ "&;auto_play=true"
+					+ "&;hide_related=false"
+					+ "&;show_comments=true"
+					+ "&;show_user=true"
+					+ "&;show_reposts=false"
+					+ "&;visual=true");
+
 			} else {
-				iframe = "<iframe width=\"100%\" height=\"360\" src=\"//www.youtube.com/embed/" + this.id + "\" " + "frameborder=\"0\" allowfullscreen></iframe>";
+				$('#YTplayer').show();
+				$('#YTplayer').attr('src', "//www.youtube.com/embed/" + this.id + '/');
 			}
 			$("#player").append(iframe);		
 		});
 
 	});
 });
-
-// TODO: Use this to add to the queue
-function addToQueue(trackObj) {
-	var item = document.createElement('li');
-	var title = "<p>" + trackObj+ "</p>";
-	$(item).append(title);
-	$('#queue').append(item);
-};
 
