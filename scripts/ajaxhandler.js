@@ -11,6 +11,32 @@ $("form#searchbox").submit(function( event ) {
 
 		$(document).on('click', '.search-results.clearfix', function(event) {
 			$('#queue').append($(this));
+			
+			//Loads track from queue
+			$(this).click(function(event){
+			event.preventDefault();
+			$('#SCplayer').hide().attr('src', '');
+			$('#YTplayer').hide().attr('src', '');
+
+			if( $(this).hasClass("SC") ) {
+				$('#SCplayer').show();
+				$('#SCplayer').attr('src', "https://w.soundcloud.com/player/?url="
+					+  this.id
+					+ "&;auto_play=true"
+					+ "&;hide_related=false"
+					+ "&;show_comments=true"
+					+ "&;show_user=true"
+					+ "&;show_reposts=false"
+					+ "&;visual=true");
+
+			} else {
+				$('#YTplayer').show();
+				$('#YTplayer').attr('src', "//www.youtube.com/embed/" + this.id + '/');
+			}
+			$("#player").append(iframe);		
+			});
+		
+		
 		});
         
 		
@@ -19,7 +45,7 @@ $("form#searchbox").submit(function( event ) {
 		};
 		
 		if ("query" in data){
-			var caption = "<h2> Results for '" + data.query + "': </h2>";
+			var caption = "<h2> Results for '" + data.query + "': </h2><h4> Click on a result to add to the queue! </h4>";
 			$("#track-name").append(caption)
 			
 			if (data.tracks.length > 1) {
@@ -40,7 +66,7 @@ $("form#searchbox").submit(function( event ) {
 					}
 
 					var trackInfo = document.createElement('div');
-					var title = "<p>" + currTrack.track_title + "</p>";
+					var title = "<p><strong>" + currTrack.track_title + "</strong></p>";
 					var user = "<p>" + currTrack.user + "</p>";
 					$(trackInfo).append(title);
 					$(trackInfo).append(user);
@@ -65,7 +91,7 @@ $("form#searchbox").submit(function( event ) {
 					$(artwork).attr('src', data.videos[i].artwork); 
 
 					var trackInfo = document.createElement('div');						
-					var title = "<p>" + data.videos[i].track_title + "</p>";
+					var title = "<p><strong>" + data.videos[i].track_title + "</strong></p>";
 					var user = "<p>" + data.videos[i].user + "</p>";
 					$(trackInfo).append(title);
 					$(trackInfo).append(user);
@@ -78,6 +104,7 @@ $("form#searchbox").submit(function( event ) {
 			};
 		};
 		
+		/* Loads track directly from search results
 		$(".search-results.clearfix").click(function(event){
 			event.preventDefault();
 			$('#SCplayer').hide().attr('src', '');
@@ -100,6 +127,7 @@ $("form#searchbox").submit(function( event ) {
 			}
 			$("#player").append(iframe);		
 		});
+		*/
 
 	});
 });

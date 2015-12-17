@@ -8,13 +8,13 @@
 
 <body>
 
-	<h1 style="text-align:center;">Cue!</h1>
+	<h1>Cue!</h1>
 	
 	<div class="container">
 		<div class="row">
 			
-			<div class="col-lg-6">
-				<form id="searchbox" method="get" action="" name="search">
+		<div class="col-lg-6 col-lg-offset-3">
+			<form id="searchbox" method="get" action="" name="search">
 					<div class="input-group">
 						<input type="text" class='form-control' name="query" maxlength="60" placeholder="Search by tag, artist, title, etc." />
 						<span class="input-group-btn">
@@ -25,7 +25,13 @@
 					<label class="radio-inline"><input type="radio" name="search_type" value="SC" checked="True">Soundcloud</label>
 					<label class="radio-inline"><input type="radio" name="search_type" value="YT">Youtube</label>
 					<label class="radio-inline"><input type="radio" name="search_type" value "both">SC + YT</label>
-				</form>
+			</form>
+		</div>
+		
+		</div>
+		
+		<div class="row">
+			<div class="col-lg-6">
 
 				<div id="results-container">
 					<div id="track-name"></div>
@@ -47,7 +53,7 @@
 					<iframe id="YTplayer" width="100%" height="360" style="display:none;" src=""></iframe>
 				</div>
 				<div id="queue-container">
-					<h3>Queue</h3>
+					<h2>Queue</h2>
 					<div id="queue" class="results-display"></div>
 				</div>
 			</div>

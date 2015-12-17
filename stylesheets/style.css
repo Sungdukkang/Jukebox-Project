@@ -1,8 +1,18 @@
+body {
+	background-image: url("/assets/swirl_pattern.png");
+}
+
+form {
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+}
+
 .artwork{
 	height: 100px;
 	width: 100px;
 	float: left;
-	border: solid black 1px;
+	border-right: solid black 1px;
 	margin-right: 5px;
 }
 
@@ -26,7 +36,9 @@
 }
 .search-results{
 	margin-bottom: 2mm;
-	cursor: pointer;	
+	cursor: pointer;
+	background-color: white;
+	border: black solid 1px;	
 }
 
 .search-results:hover{
@@ -36,4 +48,18 @@
 .results-display {
 	height: 320px;
 	overflow-y: scroll; 
+}
+
+
+h2, h4{
+	font-weight: bold;
+}
+
+iframe{
+	border:solid black 1px;
+}
+
+h1{
+	font-weight: bold;
+	text-align: center;
 }
